@@ -1,0 +1,48 @@
+﻿@page "/editComponent/{idPerson:int}"
+@*@page "/editComponent"*@
+@using MakaPrueba.Modelos.ViewModels
+@inject IBusinessServicePerson servicesPerson
+@inject IBusinessServicePersonType servicesPersonType
+
+<h3>Update Person</h3>
+<div class="form-group">
+    <EditForm Model="updatePerson ">
+        <div class="form-group">
+            <label>Nombre Persona</label>
+            <InputText @bind-Value="updatePerson.PersonName" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label>Edad Persona</label>
+            <InputNumber @bind-Value="updatePerson.PersonAge" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label>TipoPersona</label>
+            <InputSelect @bind-Value="updatePerson.PersonType" class="form-control">
+                @foreach (var person in personType)
+                {
+                    <option value="@person.PersonTypeId">@person.PersonTypeDescription</option>
+                }
+            </InputSelect>
+        </div>
+        <input type="button" value="Agregar Persona" class="btn btn-dark" @onclick="SavePerson" />
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int IdPerson{ get; set; }
+    public ViewPerson updatePerson { get; set; }
+
+    List<ViewPersonType> personType = new List<ViewPersonType>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        personType  = servicesPersonType.GetPersonType();
+        updatePerson = servicesPerson.GetPersonById(IdPerson);
+    }
+
+    public void SavePerson()
+    {
+        servicesPerson.UpdatePerson(updatePerson);
+    }
+}

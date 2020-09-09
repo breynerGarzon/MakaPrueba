@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MakaPrueba.Datos\MakaPrueba.Datos.csproj" />
+    <ProjectReference Include="..\MakaPrueba.Modelos\MakaPrueba.Modelos.csproj" />
+    <ProjectReference Include="..\MakaPrueba.Util\MakaPrueba.Util.csproj" />
+  </ItemGroup>
+
+</Project>

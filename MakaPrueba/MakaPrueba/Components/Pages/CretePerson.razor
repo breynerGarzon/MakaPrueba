@@ -1,0 +1,42 @@
+﻿@using MakaPrueba.Modelos.ViewModels
+@inject IBusinessServicePerson servicesPerson
+@inject IBusinessServicePersonType servicesPersonType
+
+<div class="form-group">
+    <EditForm Model="newPerson ">
+        <div class="form-group">
+            <label>Nombre Persona</label>
+            <InputText @bind-Value="newPerson.PersonName" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label>Edad Persona</label>
+            <InputNumber @bind-Value="newPerson.PersonAge" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label>TipoPersona</label>
+            <InputSelect @bind-Value="newPerson.PersonType" class="form-control">
+                @foreach (var person in personType)
+                {
+                    <option value="@person.PersonTypeId">@person.PersonTypeDescription</option>
+                }
+            </InputSelect>
+        </div>
+        <input type="button" value="Agregar Persona" class="btn btn-dark" @onclick="SavePerson" />
+    </EditForm>
+</div>
+<h3>CretePerson</h3>
+
+@code {
+    ViewPerson newPerson = new ViewPerson();
+    List<ViewPersonType> personType = new List<ViewPersonType>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        personType = servicesPersonType.GetPersonType();
+    }
+
+    public void SavePerson()
+    {
+        servicesPerson.CreatePerson(newPerson);
+    }
+}

@@ -1,0 +1,50 @@
+﻿@*@page "/persons"*@
+@inject IBusinessServicePerson servicesPerson
+@inject IBusinessServicePersonType servicesPersonType
+@inject NavigationManager NavManager
+
+@using MakaPrueba.Modelos.ViewModels
+
+<h3>Persons</h3>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in persons)
+        {
+            <tr>
+                <th>@person.PersonId</th>
+                <th>@person.PersonName</th>
+                <th>@person.PersonAge</th>
+                <th><input type="button" class="btn btn-warning" value="Editar" @onclick="@(()=> UpdatePerson(@person))" /><input type="button" class="btn btn-danger" value="Eliminar" @onclick="@(()=> DeletePerson(@person.PersonId))" /></th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<ViewPerson> persons = new List<ViewPerson>();
+    protected override async Task OnInitializedAsync()
+    {
+        persons = servicesPerson.GetPersons();
+    }
+
+    public void UpdatePerson(ViewPerson person)
+    {
+        //System.Console.WriteLine(person);
+        NavManager.NavigateTo($"/editComponent/{person.PersonId}");
+    }
+
+    public void DeletePerson(int idPerson)
+    {
+        System.Console.WriteLine(idPerson);
+
+        servicesPerson.DeletePerson(idPerson);
+    }
+}
